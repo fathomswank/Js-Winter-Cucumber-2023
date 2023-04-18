@@ -1,61 +1,67 @@
-const { expect } = require("chai");
-const moment = require("moment");
-
-
 class FeedbackPage {
 
-// Locators
-feedbackSubmitLocator = '#submit-button';
-feedbackSubmitErrorHeaderLocator = '#required';
-redDottedErrorBoxLocator = '//fieldset[@style="padding: 5px; border: 2px dotted rgb(204, 0, 0);"]';
-fiveStarRatingLocator = '//label[@for="page-rating-5"]';
-feedbackCommentsLocator = '#verbatim';
-willYouReturnLocator = '#will-you-return';
-priorBookingLocator = '//label[@for="booked-here-before-yes"]';
-feedbackSuccessLocator = '//label[@for="were-you-successful-yes"]';
-thankYouforFeedbackLocator = '//h5[@data-localization="thank-you-heading"]';
+feedbackHeadingLocator = '//h5[contains(text(), "specific Itineraries or")]';
+submitButtonLocator = '//button[text()="Submit"]';
+errorMessageLocator = '//p[contains(text(), "information highlighted")]';
+reddotedLinelocator = '//fieldset[contains(@style, "padding")]';
+starRating3locator = '//span[@data-localization="ratings-3"]';
+textBoxLocator = '//textarea[@id="verbatim"]';
+willYouReturnLocator = '//select[@name="will-you-return"]';
+priorAnsNOLocator = '//label[@for="booked-here-before-no"]';
+didYouAnsYesLocator = '//span[@data-localization="were-you-successful-yes"]';
+thankyouFeedbackLocator= '//h5[text()="THANK YOU FOR YOUR FEEDBACK."]';
 
-// Functions
-async submitFeedbackBtn() {
-  
-    await $(this.feedbackSubmitLocator).click()
+async switchWindow() {
+
+    const allHandles = await browser.getWindowHandles();
+    for (const handle of allHandles) {
+        await browser.switchToWindow(handle);
+        const currentUrl = await browser.getUrl();
+        if (currentUrl.includes('directword')) {
+            break;
+        }
+    }
 }
 
-async feedbackErrorHeaderDisplayed() {
-    const feedbackError = await $(this.feedbackSubmitErrorHeaderLocator).isDisplayed();
-    expect(feedbackError, 'Feedback error is not displayed').to.be.true;
+async waitForFeedbackDisplay() {
+    await $(this.feedbackHeadingLocator).waitForDisplayed();
 }
 
-async redDottedErrorBoxDisplayed() {
-    await $(this.redDottedErrorBoxLocator).waitForDisplayed();
-    return await $(this.redDottedErrorBoxLocator).isDisplayed();
-  
+async clickSubmitButton() {
+    await $(this.submitButtonLocator).click();
 }
 
-async fiveStarRating() {
-    await $(this.fiveStarRatingLocator).click();
+async isErrorMessageDisplayed() {
+    return await $(this.errorMessageLocator).isDispalyed();
 }
 
-async commentFeedback(feedbackComment) {
-    await $(this.feedbackCommentsLocator).setValue(feedbackComment);
+async isRedDotedLineDisplayed() {
+   return await $(this.reddotedLinelocator).isDispalyed();
 }
 
-async howLikelyWillYouReturn(feedbackLikely) {
-    await $(this.willYouReturnLocator).selectByVisibleText(feedbackLikely);
+async selectStarRating() {
+    await $(this.starRating3locator).click();
+ }
+
+ async enterComments() {
+    await $(this.textBoxLocator).setValue('Hi');
+ }
+ async willYouReturnSelect() {
+    await $(this.willYouReturnLocator).selectByIndex(2);   
 }
 
-async priorBookingOnHotelsWebsite() {
-    await $(this.priorBookingLocator).click();
+async clickOnPriorAnswer() {
+    await $(this.priorAnsNOLocator).click();
+ }
+
+ async clickOnDidYouAnswer() {
+    await $(this.didYouAnsYesLocator).click();
+ }
+
+ async isThankyouFeedbackDisplayed() {
+    return await $(this.thankyouFeedbackLocator).isDispalyed();
+ }
+
 }
 
-async successfullFeedback() {
-    await $(this.feedbackSuccessLocator).click();
-}
-
-async thankYouForFeedbackHeader() {
-    const ThankYouMessage = await $(this.thankYouforFeedbackLocator).isDisplayed();
-    expect(ThankYouMessage, 'Thank you for feedback not displayed').to.be.true;
-}
-
-}
 module.exports = FeedbackPage;
