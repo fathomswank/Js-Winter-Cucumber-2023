@@ -1,14 +1,11 @@
 class Homepage {
 
-    // locators of webElements on Homepage
     #createNewAccountBtnLocator = 'a[data-testid=open-registration-form-button]';
     #allLinksLocator = '<a>';
     #loginEmailLocator = '#email';
     #loginPasswordLocator = '#pass';
     #loginButtonLocator = '<button>';
-
-
-    // functions to interact with webElements on Homepage
+ 
     async clickCreateNewAccountBtn() {
         await $(this.#createNewAccountBtnLocator).click();
     }
@@ -41,8 +38,6 @@ class Homepage {
     async isLoginButtonEnabled() {
         return await $(this.#loginButtonLocator).isEnabled();
     }
-
-
 
 }
 module.exports = Homepage;

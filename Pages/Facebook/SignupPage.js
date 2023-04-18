@@ -1,6 +1,5 @@
 class SignupPage {
 
-    // locators of webElements on SignupPage
     #signUpSubHeadingLocator = "div=It’s quick and easy.";
     #firstnameInputLocator = 'input[name=firstname]'
     #lastnameInputLocator = 'input[name=lastname]'
@@ -12,20 +11,17 @@ class SignupPage {
     #femaleGenderLocator = '//label[text()="Female"]/following-sibling::input'
     #maleGenderLocator = '//label[text()="Male"]/following-sibling::input'
     #customGenderLocator = '//label[text()="Custom"]/following-sibling::input'
-
     #signupBtnLocator = '//button[@name="websubmit"]';
     #genderErrorLocator = '//div[text()="Please choose a gender. You can change who can see this later."]'
-
     #emptyFirstnameLocator = '//input[@name="firstname"]/parent::div'
     #emptyLastnameLocator = '//input[@name="lastname"]/parent::div'
     #emptyMobileOrEmailInputLocator = '//input[@name="reg_email__"]/parent::div'
     #emptyNewPasswordInputLocator = '//input[@id="password_step_input"]/parent::div'
-
     #selectedMonthLocator = '//select[@id="month"]//option[@selected]';
     #selectedDayLocator = '//select[@id="day"]//option[@selected]';
     #selectedYearLocator = '//select[@id="year"]//option[@selected]';
 
-    // functions to intercat with webElements on SignupPage
+    
     async waitForSignUpForm() {
         await $(this.#signUpSubHeadingLocator).waitForDisplayed();
     }
@@ -73,16 +69,16 @@ class SignupPage {
         await $(this.#yearDropdownLocator).selectByVisibleText(year);
     }
 
-    async selectBirthDate(birthdate) {      // birthdate = Jul 20 2018 -> 'Jul', '20', '2018'
-        const birthDateParts = birthdate.split(' ');        // ['Jul', '20', '2018']
+    async selectBirthDate(birthdate) {    
+        const birthDateParts = birthdate.split(' ');        
 
-        // select month
+       
         await $(this.#monthDropdownLocator).selectByVisibleText(birthDateParts[0]);
 
-        // select day
+       
         await $(this.#dayDropdownLocator).selectByVisibleText(birthDateParts[1]);
 
-        // select year
+        
         await $(this.#yearDropdownLocator).selectByVisibleText(birthDateParts[2]);
     }
 
